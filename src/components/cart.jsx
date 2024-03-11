@@ -1,8 +1,10 @@
 'use client'
 
-import { Fragment, useState } from 'react'
+import { Fragment, useState , useEffect} from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { IoCloseOutline } from "react-icons/io5";
+import { useSelector, useDispatch } from 'react-redux';
+import { removeItems } from '../utils/cartSlice';
 
 const products = [
   {
@@ -29,8 +31,28 @@ const products = [
   // More products...
 ]
 
-export default function Example({onClose}) {
-  const [open, setOpen] = useState(true)
+export default function Example({onClose,isOpen}) {
+  const cartItems = useSelector(state => state.cart);  
+
+  console.log(cartItems)
+
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(isOpen)
+
+  useEffect(()=>{
+    setOpen(isOpen);
+  },[isOpen])
+
+  const handleClose = () => {
+    setOpen(false);
+    onClose(false);
+  };
+
+
+  useEffect(() => {
+    setOpen(isOpen);
+  }, [isOpen]);
+
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -68,11 +90,12 @@ export default function Example({onClose}) {
                           <button
                             type="button"
                             className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
-                            onClick={onClose}
+                            onClick={handleClose}
                           >
                             <span className="absolute -inset-0.5" />
                             <span className="sr-only">Close panel</span>
-                            <IoCloseOutline className="h-6 w-6" aria-hidden="true" />
+                            <IoCloseOutline 
+                            className="h-6 w-6" aria-hidden="true" />
                           </button>
                         </div>
                       </div>
@@ -80,11 +103,11 @@ export default function Example({onClose}) {
                       <div className="mt-8">
                         <div className="flow-root">
                           <ul role="list" className="-my-6 divide-y divide-gray-200">
-                            {products.map((product) => (
+                            {cartItems.map((product) => (
                               <li key={product.id} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
-                                    src={product.imageSrc}
+                                    src={product.image}
                                     alt={product.imageAlt}
                                     className="h-full w-full object-cover object-center"
                                   />
@@ -94,19 +117,20 @@ export default function Example({onClose}) {
                                   <div>
                                     <div className="flex justify-between text-base font-medium text-gray-900">
                                       <h3>
-                                        <a href={product.href}>{product.name}</a>
+                                        <a href={product.href}>{product.title}</a>
                                       </h3>
                                       <p className="ml-4">{product.price}</p>
                                     </div>
-                                    <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                                    {/* <p className="mt-1 text-sm text-gray-500">{product.color}</p> */}
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
-                                    <p className="text-gray-500">Qty {product.quantity}</p>
+                                    {/* <p className="text-gray-500">Qty {product.quantity}</p> */}
 
                                     <div className="flex">
                                       <button
                                         type="button"
                                         className="font-medium text-indigo-600 hover:text-indigo-500"
+                                        onClick={() => dispatch(removeItems(product.id))}
                                       >
                                         Remove
                                       </button>
@@ -129,7 +153,7 @@ export default function Example({onClose}) {
                       <div className="mt-6">
                         <a
                           href="#"
-                          className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                          className="flex items-center justify-center rounded-md border border-transparent bg-pink px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-fau"
                         >
                           Checkout
                         </a>

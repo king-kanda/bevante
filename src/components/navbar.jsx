@@ -1,147 +1,475 @@
+/*
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/aspect-ratio'),
+    ],
+  }
+  ```
+*/
 'use client'
 
-import { useState } from 'react'
-import { Chonburi } from "next/font/google";
+import { Fragment, useState , useEffect} from 'react'
+import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
+import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { CartSlide } from ".";
+import { useSelector} from 'react-redux';
+import Image from 'next/image'
+import Link from 'next/link'
+import { Inter } from 'next/font/google'
 
-const chonburi = Chonburi({
-  subsets: ["latin"],
-  weight: '400', // Specify the desired weight here
-});
-
-const Navbar = () => {
-
-  const [isOpen , setIsOpen] = useState(false)
-
-  const handleClick = () =>{
-    setIsOpen(!isOpen)
-    console.log(isOpen)
-  }
- 
-
-
-  return (
-    <>
-      {/* component */}
-      <div className="bg-fau">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          {/* logo */}
-          <div className=" flex-shrink-0">
-            <h1 className={` ${chonburi.className} text-2xl`}>
-              Bevanté
-            </h1>
-          </div>
-          {/* search */}
-          <nav className="contents">
-            {/* nav Links */}
-            <div className="flex items-center judtify-center">
-              <div className="navlinks">
-                <ul className="flex gap-4 tetx-sm" >
-                  <li>
-                    Home
-                  </li>
-                  <li>
-                    Discover
-                  </li>
-                  <li>
-                    Drinks
-                  </li>
-                  <li>
-                    SweetTooth
-                  </li>
-                  <li>
-                    Flowers
-                  </li>
-                  <li>
-                    Hijabs
-                  </li>
-                  
-                </ul>
-              </div>
-
-
-            </div>
-            {/* buttons */}
-            <div className="nav-btns">
-              <ul className="ml-4 xl:w-48 flex items-center justify-end">
-                  <li className="ml-2 lg:ml-4 relative inline-block">
-                    <a className="" href="">
-                      <svg
-                        className="h-9 lg:h-10 p-2 text-gray-900"
-                        aria-hidden="true"
-                        focusable="false"
-                        data-prefix="far"
-                        data-icon="user"
-                        role="img"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 448 512"
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M313.6 304c-28.7 0-42.5 16-89.6 16-47.1 0-60.8-16-89.6-16C60.2 304 0 364.2 0 438.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-25.6c0-74.2-60.2-134.4-134.4-134.4zM400 464H48v-25.6c0-47.6 38.8-86.4 86.4-86.4 14.6 0 38.3 16 89.6 16 51.7 0 74.9-16 89.6-16 47.6 0 86.4 38.8 86.4 86.4V464zM224 288c79.5 0 144-64.5 144-144S303.5 0 224 0 80 64.5 80 144s64.5 144 144 144zm0-240c52.9 0 96 43.1 96 96s-43.1 96-96 96-96-43.1-96-96 43.1-96 96-96z"
-                        />
-                      </svg>
-                    </a>
-                  </li>
-                  <li className="ml-2 lg:ml-4 relative inline-block">
-                    <a className="" href="">
-                      <div className="absolute -top-1 right-0 z-10 bg-blue text-xs font-bold px-1 py-0.5 rounded-full">
-                        3
-                      </div>
-                      <svg
-                        className="h-9 lg:h-10 p-2 text-gray-900"
-                        aria-hidden="true"
-                        focusable="false"
-                        data-prefix="far"
-                        data-icon="heart"
-                        role="img"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 512 512"
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"
-                        />
-                      </svg>
-                    </a>
-                  </li>
-                  <li 
-                  className="ml-2 lg:ml-4 relative inline-block"
-                  onClick={handleClick}
-                  >
-                    <button className="">
-                      <div className="absolute -top-1 right-0 z-10 bg-blue text-xs font-bold px-1 py-0.5 rounded-full">
-                        12
-                      </div>
-                      <svg
-                        className="h-9 lg:h-10 p-2 text-gray-900"
-                        aria-hidden="true"
-                        focusable="false"
-                        data-prefix="far"
-                        data-icon="shopping-cart"
-                        role="img"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 576 512"
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M551.991 64H144.28l-8.726-44.608C133.35 8.128 123.478 0 112 0H12C5.373 0 0 5.373 0 12v24c0 6.627 5.373 12 12 12h80.24l69.594 355.701C150.796 415.201 144 430.802 144 448c0 35.346 28.654 64 64 64s64-28.654 64-64a63.681 63.681 0 0 0-8.583-32h145.167a63.681 63.681 0 0 0-8.583 32c0 35.346 28.654 64 64 64 35.346 0 64-28.654 64-64 0-18.136-7.556-34.496-19.676-46.142l1.035-4.757c3.254-14.96-8.142-29.101-23.452-29.101H203.76l-9.39-48h312.405c11.29 0 21.054-7.869 23.452-18.902l45.216-208C578.695 78.139 567.299 64 551.991 64zM208 472c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm256 0c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm23.438-200H184.98l-31.31-160h368.548l-34.78 160z"
-                        />
-                      </svg>
-                    </button>
-                  </li>
-              </ul>
-            </div>
-          </nav>
-          {/* cart count */}
-          {isOpen && <CartSlide onClose={handleClick} /> }
-
-        </div>
-        <hr />
-      </div>
-    </>
-
-  );
+const navigation = {
+  categories: [
+    {
+      id: 'women',
+      name: 'Women',
+      featured: [
+        {
+          name: 'New Arrivals',
+          href: '#',
+          imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg',
+          imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.',
+        },
+        {
+          name: 'Basic Tees',
+          href: '#',
+          imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg',
+          imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
+        },
+      ],
+      sections: [
+        {
+          id: 'clothing',
+          name: 'Clothing',
+          items: [
+            { name: 'Tops', href: '#' },
+            { name: 'Dresses', href: '#' },
+            { name: 'Pants', href: '#' },
+            { name: 'Denim', href: '#' },
+            { name: 'Sweaters', href: '#' },
+            { name: 'T-Shirts', href: '#' },
+            { name: 'Jackets', href: '#' },
+            { name: 'Activewear', href: '#' },
+            { name: 'Browse All', href: '#' },
+          ],
+        },
+        {
+          id: 'accessories',
+          name: 'Accessories',
+          items: [
+            { name: 'Watches', href: '#' },
+            { name: 'Wallets', href: '#' },
+            { name: 'Bags', href: '#' },
+            { name: 'Sunglasses', href: '#' },
+            { name: 'Hats', href: '#' },
+            { name: 'Belts', href: '#' },
+          ],
+        },
+        {
+          id: 'brands',
+          name: 'Brands',
+          items: [
+            { name: 'Full Nelson', href: '#' },
+            { name: 'My Way', href: '#' },
+            { name: 'Re-Arranged', href: '#' },
+            { name: 'Counterfeit', href: '#' },
+            { name: 'Significant Other', href: '#' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'men',
+      name: 'Men',
+      featured: [
+        {
+          name: 'New Arrivals',
+          href: '#',
+          imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
+          imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.',
+        },
+        {
+          name: 'Artwork Tees',
+          href: '#',
+          imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg',
+          imageAlt:
+            'Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.',
+        },
+      ],
+      sections: [
+        {
+          id: 'clothing',
+          name: 'Clothing',
+          items: [
+            { name: 'Tops', href: '#' },
+            { name: 'Pants', href: '#' },
+            { name: 'Sweaters', href: '#' },
+            { name: 'T-Shirts', href: '#' },
+            { name: 'Jackets', href: '#' },
+            { name: 'Activewear', href: '#' },
+            { name: 'Browse All', href: '#' },
+          ],
+        },
+        {
+          id: 'accessories',
+          name: 'Accessories',
+          items: [
+            { name: 'Watches', href: '#' },
+            { name: 'Wallets', href: '#' },
+            { name: 'Bags', href: '#' },
+            { name: 'Sunglasses', href: '#' },
+            { name: 'Hats', href: '#' },
+            { name: 'Belts', href: '#' },
+          ],
+        },
+        {
+          id: 'brands',
+          name: 'Brands',
+          items: [
+            { name: 'Re-Arranged', href: '#' },
+            { name: 'Counterfeit', href: '#' },
+            { name: 'Full Nelson', href: '#' },
+            { name: 'My Way', href: '#' },
+          ],
+        },
+      ],
+    },
+  ],
+  pages: [
+    { name: 'Company', href: '#' },
+    { name: 'Stores', href: '#' },
+  ],
 }
 
-export default Navbar;
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
+
+export default function Example() {
+  const [itemOpen, setItemOpen] = useState(false)
+
+  const [isOpen , setIsOpen] = useState(false)
+  const cartItems = useSelector(state => state.cart);
+  
+
+  const handleClick = () =>{
+    setIsOpen(true)
+   
+  }
+
+  const onClose =()=>{
+    setIsOpen(false)
+  }
+
+  return (
+    <div className="bg-white">
+      {/* Mobile menu */}
+      <Transition.Root show={itemOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-40 lg:hidden" onClose={setItemOpen}>
+          <Transition.Child
+            as={Fragment}
+            enter="transition-opacity ease-linear duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity ease-linear duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 z-40 flex">
+            <Transition.Child
+              as={Fragment}
+              enter="transition ease-in-out duration-300 transform"
+              enterFrom="-translate-x-full"
+              enterTo="translate-x-0"
+              leave="transition ease-in-out duration-300 transform"
+              leaveFrom="translate-x-0"
+              leaveTo="-translate-x-full"
+            >
+              <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
+                <div className="flex px-4 pb-2 pt-5">
+                  <button
+                    type="button"
+                    className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                    onClick={() => setItemOpen(false)}
+                  >
+                    <span className="absolute -inset-0.5" />
+                    <span className="sr-only">Close menu</span>
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                  </button>
+                </div>
+
+                {/* Links */}
+                <Tab.Group as="div" className="mt-2">
+                  <div className="border-b border-gray-200">
+                    <Tab.List className="-mb-px flex space-x-8 px-4">
+                      {navigation.categories.map((category) => (
+                        <Tab
+                          key={category.name}
+                          className={({ selected }) =>
+                            classNames(
+                              selected ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
+                              'flex-1 whitespace-nowrap border-b-2 px-1 py-4 text-base font-medium'
+                            )
+                          }
+                        >
+                          {category.name}
+                        </Tab>
+                      ))}
+                    </Tab.List>
+                  </div>
+                  <Tab.Panels as={Fragment}>
+                    {navigation.categories.map((category) => (
+                      <Tab.Panel key={category.name} className="space-y-10 px-4 pb-8 pt-10">
+                        <div className="grid grid-cols-2 gap-x-4">
+                          {category.featured.map((item) => (
+                            <div key={item.name} className="group relative text-sm">
+                              <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                                <img src={item.imageSrc} alt={item.imageAlt} className="object-cover object-center" />
+                              </div>
+                              <a href={item.href} className="mt-6 block font-medium text-gray-900">
+                                <span className="absolute inset-0 z-10" aria-hidden="true" />
+                                {item.name}
+                              </a>
+                              <p aria-hidden="true" className="mt-1">
+                                Shop now
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                        {category.sections.map((section) => (
+                          <div key={section.name}>
+                            <p id={`${category.id}-${section.id}-heading-mobile`} className="font-medium text-gray-900">
+                              {section.name}
+                            </p>
+                            <ul
+                              role="list"
+                              aria-labelledby={`${category.id}-${section.id}-heading-mobile`}
+                              className="mt-6 flex flex-col space-y-6"
+                            >
+                              {section.items.map((item) => (
+                                <li key={item.name} className="flow-root">
+                                  <a href={item.href} className="-m-2 block p-2 text-gray-500">
+                                    {item.name}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </Tab.Panel>
+                    ))}
+                  </Tab.Panels>
+                </Tab.Group>
+
+                <div className="space-y-6 border-t border-gray-200 px-4 py-6">
+                  {navigation.pages.map((page) => (
+                    <div key={page.name} className="flow-root">
+                      <a href={page.href} className="-m-2 block p-2 font-medium text-gray-900">
+                        {page.name}
+                      </a>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-6 border-t border-gray-200 px-4 py-6">
+                  <div className="flow-root">
+                    <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
+                      Sign in
+                    </a>
+                  </div>
+                  <div className="flow-root">
+                    <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
+                      Create account
+                    </a>
+                  </div>
+                </div>
+
+                
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition.Root>
+
+      <header className="relative bg-white">
+        <p className="flex h-10 items-center justify-center bg-fau px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
+          Get free delivery on orders over $100
+        </p>
+
+        <nav aria-label="Top" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="border-b border-gray-200">
+            <div className="flex h-16 items-center">
+              <button
+                type="button"
+                className="relative rounded-md bg-white p-2 text-gray-400 lg:hidden"
+                onClick={() => setItemOpen(true)}
+              >
+                <span className="absolute -inset-0.5" />
+                <span className="sr-only">itemOpen menu</span>
+                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+              </button>
+
+              {/* Logo */}
+              <div className="ml-4 flex lg:ml-0 bg-pink rounded-full">
+                <Link href="/">
+                  <span className="sr-only">Your Company</span>
+                  <Image
+                    src="/logo.png"
+                    width={50}
+                    height={50}
+                    alt="Picture of the author"
+                    />
+                </Link>
+              </div>
+
+              {/* Flyout menus */}
+              <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
+                <div className="flex h-full space-x-8">
+                  {navigation.categories.map((category) => (
+                    <Popover key={category.name} className="flex">
+                      {({ itemOpen }) => (
+                        <>
+                          <div className="relative flex">
+                            <Popover.Button
+                              className={classNames(
+                                itemOpen
+                                  ? 'border-indigo-600 text-indigo-600'
+                                  : 'border-transparent text-gray-700 hover:text-gray-800',
+                                'relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out'
+                              )}
+                            >
+                              {category.name}
+                            </Popover.Button>
+                          </div>
+
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-200"
+                            enterFrom="opacity-0"
+                            enterTo="opacity-100"
+                            leave="transition ease-in duration-150"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                          >
+                            <Popover.Panel className="absolute inset-x-0 top-full text-sm text-gray-500">
+                              {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
+                              <div className="absolute inset-0 top-1/2 bg-white shadow" aria-hidden="true" />
+
+                              <div className="relative bg-white">
+                                <div className="mx-auto max-w-7xl px-8">
+                                  <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-16">
+                                    <div className="col-start-2 grid grid-cols-2 gap-x-8">
+                                      {category.featured.map((item) => (
+                                        <div key={item.name} className="group relative text-base sm:text-sm">
+                                          <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                                            <img
+                                              src={item.imageSrc}
+                                              alt={item.imageAlt}
+                                              className="object-cover object-center"
+                                            />
+                                          </div>
+                                          <a href={item.href} className="mt-6 block font-medium text-gray-900">
+                                            <span className="absolute inset-0 z-10" aria-hidden="true" />
+                                            {item.name}
+                                          </a>
+                                          <p aria-hidden="true" className="mt-1">
+                                            Shop now
+                                          </p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                    <div className="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm">
+                                      {category.sections.map((section) => (
+                                        <div key={section.name}>
+                                          <p id={`${section.name}-heading`} className="font-medium text-gray-900">
+                                            {section.name}
+                                          </p>
+                                          <ul
+                                            role="list"
+                                            aria-labelledby={`${section.name}-heading`}
+                                            className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
+                                          >
+                                            {section.items.map((item) => (
+                                              <li key={item.name} className="flex">
+                                                <a href={item.href} className="hover:text-gray-800">
+                                                  {item.name}
+                                                </a>
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </Popover.Panel>
+                          </Transition>
+                        </>
+                      )}
+                    </Popover>
+                  ))}
+
+                  {navigation.pages.map((page) => (
+                    <a
+                      key={page.name}
+                      href={page.href}
+                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                    >
+                      {page.name}
+                    </a>
+                  ))}
+                </div>
+              </Popover.Group>
+
+              <div className="ml-auto flex items-center">
+                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                  <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                    Sign in
+                  </a>
+                  <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
+                  <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                    Create account
+                  </a>
+                </div>
+
+                
+
+                {/* Search */}
+                <div className="flex lg:ml-6">
+                  <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
+                    <span className="sr-only">Search</span>
+                    <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
+                  </a>
+                </div>
+
+                {/* Cart */}
+                <div className="ml-4 flow-root lg:ml-6">
+                  <a href="#" className="group -m-2 flex items-center p-2" onClick={handleClick}>
+                    <ShoppingBagIcon
+                      className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                      aria-hidden="true"
+                    />
+                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                    {cartItems.length === 0 ? "0" : cartItems.length }
+                    </span>
+                    <span className="sr-only">items in cart, view bag</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <CartSlide isOpen={isOpen} onClose={onClose} /> 
+      </header>
+    </div>
+  )
+}
